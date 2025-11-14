@@ -5,7 +5,7 @@
     of the MIT license.  See the LICENSE file for details.
 */
 
-const version_string = "Y2JB 1.2 by Gezine";
+const version_string = "Y2JB 1.2.1 by Gezine";
 
 const autoloader_version_string = "Autoloader v0.2 by PLK";
 
