@@ -188,7 +188,9 @@ async function elf_wait_for_exit(thr_handle, payloadout) {
 
 let elf_loader_active = false;
 
-async function start_elf_loader() {
+
+async function start_elf_loader(override_elfldr_path = null) {
+
 
     try {
 
@@ -199,16 +201,19 @@ async function start_elf_loader() {
 
         check_jailbroken();
         
-        const elfldr_data_path = "/data/elfldr.elf";
         const elfldr_download0_path = "/mnt/sandbox/" + get_title_id() + "_000/download0/cache/splash_screen/aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY=/elfldr.elf";
-        
-        let existing_path = "";
-        if (file_exists(elfldr_data_path)) {
-            existing_path = elfldr_data_path;
-        } else if (file_exists(elfldr_download0_path)) {
-            existing_path = elfldr_download0_path;
-        } else {
-            throw new Error("file not exist: elfldr.elf not found");
+
+        let existing_path = elfldr_download0_path;
+        if (override_elfldr_path !== null) {
+            if (file_exists(override_elfldr_path)) {
+                existing_path = override_elfldr_path;
+                send_notification("Using custom elfldr path:\n" + existing_path);
+            } else {
+                send_notification("Custom elfldr path does not exist:\n" + override_elfldr_path + "\nUsing default path.");
+                if (!file_exists(elfldr_download0_path)) {
+                    throw new Error("file not exist: elfldr.elf not found");
+                }
+            }
         }
         
         await log("loading elfldr from: " + existing_path);

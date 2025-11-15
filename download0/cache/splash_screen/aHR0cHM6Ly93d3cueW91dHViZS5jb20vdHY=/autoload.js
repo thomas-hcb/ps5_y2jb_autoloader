@@ -1,6 +1,8 @@
 
 async function start_autoload() {
 
+  const AUTOLOAD_DIRNAME = "ps5_autoloader";
+
   function sceNetHtons(hostshort) {
     return ((hostshort & 0xff) << 8) | ((hostshort >> 8) & 0xff);
   }
@@ -209,13 +211,23 @@ async function start_autoload() {
 
 
   const autoLoadPaths = [];
+
+
+  // if you want to use multiple YT apps from different regions,
+  // name your directory ps5_autoloader_[TITLE_ID], e.g. ps5_autoloader_PPSA01650
+  // this will allow you to have different autoload.txt files for each app
+  // (these directories always take precedence over the generic ps5_autoloader directory)
+
   for (let i = 0; i <= 7; i++) {
-    autoLoadPaths.push(`/mnt/usb${i}/ps5_autoloader/autoload.txt`);
+    autoLoadPaths.push(`/mnt/usb${i}/${AUTOLOAD_DIRNAME}_${get_title_id()}/autoload.txt`);
   }
-  autoLoadPaths.push("/data/ps5_autoloader/autoload.txt");
-  autoLoadPaths.push("/mnt/sandbox/PPSA01650_000/download0/cache/splash_screen/aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY=/ps5_autoloader/autoload.txt");
-  autoLoadPaths.push("/mnt/sandbox/PPSA01651_000/download0/cache/splash_screen/aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY=/ps5_autoloader/autoload.txt");
-  autoLoadPaths.push("/mnt/sandbox/PPSA01652_000/download0/cache/splash_screen/aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY=/ps5_autoloader/autoload.txt");
+  autoLoadPaths.push(`/data/${AUTOLOAD_DIRNAME}_${get_title_id()}/autoload.txt`);
+
+  for (let i = 0; i <= 7; i++) {
+    autoLoadPaths.push(`/mnt/usb${i}/${AUTOLOAD_DIRNAME}/autoload.txt`);
+  }
+  autoLoadPaths.push(`/data/${AUTOLOAD_DIRNAME}/autoload.txt`);
+  autoLoadPaths.push(`/mnt/sandbox/${get_title_id()}_000/download0/cache/splash_screen/aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY=/${AUTOLOAD_DIRNAME}/autoload.txt`);
 
   // Check each path in order and use the first one that exists
   let autoLoadConfigPath = null;
@@ -253,6 +265,19 @@ async function start_autoload() {
           const errorMsg = "Invalid sleep time: " + sleepTimeStr;
           log("[ERROR] " + errorMsg);
           send_notification("[ERROR] " + errorMsg);
+        }
+      } else if (trimmedLine === 'elfldr.elf') {
+        const fullPath = trimmedLine.startsWith('/') ? trimmedLine : configDir + trimmedLine;
+        // using custom elfldr
+        if (!elf_loader_active) {
+          await start_elf_loader(fullPath);
+          await sleep(4000); // Give it time to start
+          if (!elf_loader_active) {
+            const msg = "[-] elf loader not active, cannot send elf";
+            log(msg);
+            send_notification(msg);
+            throw new Error(msg);
+          }
         }
       } else if (trimmedLine.endsWith('.elf') || trimmedLine.endsWith('.bin')) {
         const fullPath = trimmedLine.startsWith('/') ? trimmedLine : configDir + trimmedLine;
