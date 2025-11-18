@@ -1,10 +1,11 @@
-# PS5 Y2JB Autoloader
+<p align="center">
+ <img src="./download0/cache/splash_screen/aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY=/icon0.png" width="128" />
+</p>
+<h1 align="center">PS5 Y2JB Autoloader</h1>
+<h3 align="center">Fork of <a href="https://github.com/Gezine/Y2JB">Y2JB</a></h3>
+&nbsp;
+<p align="center">Automatically loads the kernel exploit, elf_loader, your elf payloads, and .js scripts.<br>Supports PS5 firmwares 4.03-10.01</p>
 
-Fork of [Y2JB](https://github.com/Gezine/Y2JB)
-
-Automatically loads the kernel exploit, elf_loader, your elf payloads, and .js scripts.
-
-Supports PS5 firmwares 4.03-10.01
 
 ## How to Use
 
@@ -25,7 +26,51 @@ Since version **v0.2**, you can update the autoloader by simply placing **`y2jb_
 
 ## Setup Instructions
 
-If you're jailbroken, you can setup it manually just like the original [Y2JB](https://github.com/Gezine/Y2JB/blob/main/README.md).  
+Installation is the same as the original [Y2JB](https://github.com/Gezine/Y2JB/blob/main/README.md) (remote loader).
+
+
+### Jailbroken PS5 (Webkit, Lua, BD-JB)
+- Install correct YouTube version (v1.03).
+- Use FTP to place `download0.dat` from releases page in `/user/download/PPSA0165*`
+
+### Non-Jailbroken PS5
+You might find a system backup with pre-configured Autoloader (I don't distribute such backups).
+
+You can also restore [Y2JB](https://github.com/Gezine/Y2JB) (remote loader) system backup, and then:
+- install Autoloader over it by using [y2jb_updater](https://github.com/itsPLK/y2jb_updater)
+- or use FTP to place `download0.dat` from releases page in `/user/download/PPSA01650`
+- or install separate YT app from different region, and use FTP to place `download0.dat` from releases page in `/user/download/PPSA0165*`
+
+
+## Additional Info
+
+<Details>
+<Summary><i>How to have different autoload configs for multiple YT apps?</i></Summary>
+
+If you want to use multiple YT apps from different regions,
+name your directory <code>ps5_autoloader_[TITLE_ID]</code>, e.g. <code>ps5_autoloader_PPSA01650</code>
+this will allow you to have different autoload.txt files for each app
+(these directories always take precedence over the generic ps5_autoloader directory)
+</Details>
+
+<Details>
+<Summary><i>How to use custom ELF Loader version?</i></Summary>
+
+You can use custom ELF Loader by putting <code>elfldr.elf</code> (must be that filename!) in autoload directory and adding <code>elfldr.elf</code> line to autoload.txt <b>before any other ELF</b>.
+</Details>
+
+<Details>
+<Summary><i>etaHEN loading stability issues</i></Summary>
+
+Sometimes etaHEN will fail to load. It seems to be etaHEN/kstuff thing, and seems to affect mostly higher FW versions.  
+To improve stability, you can try disabling etaHEN toolbox automatic injecting, or loading etaHEN without kstuff and then loading kstuff separately.  
+You can also try minimizing the YT app (by holding PS button) before it loads etaHEN (after running lapse) - you can add some delay before loading etaHEN to have more time to minimize.
+
+If you are loading multiple ELFs, it's probably best if etaHEN / kstuff is the last payload you load.
+
+Some users are reporting that adding a slight delay before loading etaHEN improves stability, but it's most likely just a placebo.
+</Details>
+
 
 ## Credits
 
@@ -43,3 +88,7 @@ If you're jailbroken, you can setup it manually just like the original [Y2JB](ht
 ## Disclaimer
 
 This tool is provided as-is for research and development purposes only. Use at your own risk. The developers are not responsible for any damage, data loss, or consequences resulting from the use of this software.
+
+## Donate
+- [donate to Gezine](https://github.com/sponsors/Gezine)
+- [donate to PLK](DONATE.md)
