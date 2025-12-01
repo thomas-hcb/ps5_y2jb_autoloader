@@ -141,6 +141,64 @@ async function start_icon_update() {
     }
   }
 
-  await updateIcon();
+  async function updateAsset(currentAssetPath, newAssetPath) {
+    const assetName = currentAssetPath.split("/").pop(); // Extract filename for logging
 
+    if (!file_exists(currentAssetPath)) {
+        log("Asset file does not exist: " + currentAssetPath);
+        return null;
+    }
+
+    let currentAsset = null;
+    let newAsset = null;
+    let areIdentical = false;
+
+    try {
+        log("Reading current asset from: " + currentAssetPath);
+        currentAsset = read_file_to_buffer(currentAssetPath);
+        log("Current asset size: " + currentAsset.size + " bytes");
+
+        log("Reading new asset from: " + newAssetPath);
+        newAsset = read_file_to_buffer(newAssetPath);
+        log("New asset size: " + newAsset.size + " bytes");
+
+        if (currentAsset.size !== newAsset.size) {
+            log("Assets are different (size mismatch).");
+            areIdentical = false;
+        } else {
+            log("Assets are the same size. Comparing contents...");
+            areIdentical = compare_buffers(currentAsset.buffer, newAsset.buffer, currentAsset.size);
+        }
+
+        if (!areIdentical) {
+            log("Assets are different. Updating asset...");
+            const writeSuccess = write_buffer_to_file(currentAssetPath, newAsset.buffer, newAsset.size);
+            if (writeSuccess) {
+                log("Asset updated successfully at: " + currentAssetPath);
+                send_notification("Asset (" + assetName + ") updated successfully.");
+            } else {
+                log("Failed to update asset at: " + currentAssetPath);
+            }
+        } else {
+            log("Assets are identical. No update needed.");
+        }
+
+    } catch (e) {
+        const msg = (e && e.message) ? e.message : String(e);
+        log("[ERROR] updateAsset failed: " + msg);
+        send_notification("[ERROR] updateAsset: " + msg);
+    }
+  }
+
+  // Usage:
+  await updateIcon();
+  await updateAsset(
+    "/user/appmeta/" + get_title_id() + "/pic0.png",
+    "/mnt/sandbox/" + get_title_id() + "_000/download0/cache/splash_screen/aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY=/pic0.png"
+  );
+
+  await updateAsset(
+    "/system_ex/vsh_asset/bg_hub_default.dds",
+    "/mnt/sandbox/" + get_title_id() + "_000/download0/cache/splash_screen/aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY=/bg_hub_default.dds"
+  );
 }
