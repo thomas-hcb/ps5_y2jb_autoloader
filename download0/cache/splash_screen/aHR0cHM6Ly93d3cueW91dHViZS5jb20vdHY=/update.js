@@ -613,6 +613,15 @@ async function updateIcon() {
               // attempt to update the icon
               try {
                   await updateIcon();
+                  await updateAsset(
+                    "/user/appmeta/" + get_title_id() + "/pic0.png",
+                    FINAL_PATH + "/pic0.png"
+                  );
+                  await updateAsset(
+                    "/system_ex/vsh_asset/bg_hub_default.dds",
+                    FINAL_PATH + "/bg_hub_default.dds"
+                  );
+  
               } catch (e) {
                   const msg = (e && e.message) ? e.message : String(e);
                   log("[WARN] Icon update failed: " + msg);
@@ -785,4 +794,58 @@ async function updateIcon() {
   log("Y2JB Updater v" + Y2JB_UPDATER_VERSION + " by PLK");
   await update();
 
+}
+
+async function updateAsset(currentAssetPath, newAssetPath) {
+    const assetName = currentAssetPath.split("/").pop(); // Extract filename for logging
+
+    if (!file_exists(currentAssetPath)) {
+        log("Asset file does not exist: " + currentAssetPath);
+        return null;
+    }
+    
+    if (!file_exists(newAssetPath)) {
+        log("New asset file not found in update package: " + newAssetPath);
+        return null;
+    }
+
+    let currentAsset = null;
+    let newAsset = null;
+    let areIdentical = false;
+
+    try {
+        log("Reading current asset from: " + currentAssetPath);
+        currentAsset = read_file_to_buffer(currentAssetPath);
+        log("Current asset size: " + currentAsset.size + " bytes");
+
+        log("Reading new asset from: " + newAssetPath);
+        newAsset = read_file_to_buffer(newAssetPath);
+        log("New asset size: " + newAsset.size + " bytes");
+
+        if (currentAsset.size !== newAsset.size) {
+            log("Assets are different (size mismatch).");
+            areIdentical = false;
+        } else {
+            log("Assets are the same size. Comparing contents...");
+            areIdentical = compare_buffers(currentAsset.buffer, newAsset.buffer, currentAsset.size);
+        }
+
+        if (!areIdentical) {
+            log("Assets are different. Updating asset...");
+            const writeSuccess = write_buffer_to_file(currentAssetPath, newAsset.buffer, newAsset.size);
+            if (writeSuccess) {
+                log("Asset updated successfully at: " + currentAssetPath);
+                send_notification("Asset (" + assetName + ") updated successfully.");
+            } else {
+                log("Failed to update asset at: " + currentAssetPath);
+            }
+        } else {
+            log("Assets are identical. No update needed.");
+        }
+
+    } catch (e) {
+        const msg = (e && e.message) ? e.message : String(e);
+        log("[ERROR] updateAsset failed: " + msg);
+        send_notification("[ERROR] updateAsset: " + msg);
+    }
 }
