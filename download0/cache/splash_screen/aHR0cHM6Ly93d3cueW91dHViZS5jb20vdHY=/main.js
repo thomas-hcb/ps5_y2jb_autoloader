@@ -925,7 +925,7 @@ function trigger() {
         await start_autoload();
 
         send_notification("Autoload finished.\nClosing YT app");
-        kill_youtube();
+        //kill_youtube();
 
     } catch (e) {                
         await log('EXCEPTION: ' + e.message);
