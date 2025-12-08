@@ -2,10 +2,31 @@
  <img src="./download0/cache/splash_screen/aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY=/icon0.png" width="128" />
 </p>
 <h1 align="center">PS5 Y2JB Autoloader</h1>
-<h3 align="center">Fork of <a href="https://github.com/Gezine/Y2JB">Y2JB</a></h3>
+<h3 align="center">Fork of <a href="https://github.com/itsPLK/ps5_y2jb_autoloader">Y2JB Autoloader</a></h3>
 &nbsp;
-<p align="center">Automatically loads the kernel exploit, elf_loader, your elf payloads, and .js scripts.<br>Supports PS5 firmwares 4.03-10.01</p>
+<p align="center">Automatically loads the kernel exploit, elf_loader, your elf payloads, and .js scripts.<br>Supports PS5 firmwares 4.03-10.01 having M2 SSD drive plugged in</p>
 
+
+## For PS5 consoles with an M.2 SSD installed
+
+- Gezine's `lapse.js` has a known issue (reported by `@Stuey`): when closing Y2JB on a PS5 with an M.2 SSD installed, the app can hang and may trigger a System Software Error.
+- ItsPLK's autoloader uses a modified version of `lapse.js` that removes calling `kill_youtube()` at the end of its lapse version.
+  - Gezine `lapse.js`: https://github.com/Gezine/Y2JB/blob/cc0a28a7697a949c3a14e1dc4dce958480a3f60f/payloads/lapse.js#L1902
+  - itsPLK `lapse.js`: https://github.com/itsPLK/ps5_y2jb_autoloader/blob/main/download0/cache/splash_screen/aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY%3D/lapse.js#L1908
+- My fix removes the call to `kill_youtube()` (see: https://github.com/itsPLK/ps5_y2jb_autoloader/blob/main/download0/cache/splash_screen/aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY%3D/main.js#L928) to prevent the autoloader from closing the YouTube app. This change avoids the System Software Error that occurred when an M.2 SSD was installed. Use `y2jb_updater` (https://github.com/itsPLK/y2jb_updater) to deploy this update to your PS5.
+
+### How to apply the update
+Follow the [release page](https://github.com/thomas-hcb/ps5_y2jb_autoloader/releases) or create the update package yourself as below:
+- Run: `python create_update_package.py "download0\cache\splash_screen\aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY="`
+- Copy the generated `y2jb_update.zip` to `USB/y2jb_update.zip`.
+- Insert the USB drive into your PS5 and run the YouTube app to install the update.
+- Enjoy the fix. You can also configure etaHEN Toolbox to automatically open Itemzflow; this will gracefully close the YouTube app behind the scenes.
+
+## Result after applying the fix
+
+<p align="left">
+  Watch the demo video: <a href="./Fix.mp4">Fix.mp4</a> for details.
+</p>
 
 ## How to Use
 

@@ -924,8 +924,8 @@ function trigger() {
         await start_icon_update();
         await start_autoload();
 
-        send_notification("Autoload finished.\nClosing YT app");
-        kill_youtube();
+        send_notification("Autoload finished.\nOpen Itemzflow to close the YT app gracefully.");
+        //kill_youtube();
 
     } catch (e) {                
         await log('EXCEPTION: ' + e.message);

@@ -1906,6 +1906,8 @@ async function start_lapse() {
             
             await log("Lapse finished\nClosing Y2JB...");
             send_notification("Lapse finished\nClosing Y2JB...");
+            //Add this kill function call back to indicate that ItsPLK has modified the Gezine lapse.js version not to close the YT app.
+            //kill_youtube();
             
         } catch (e) {
             await log("Lapse error: " + e.message);
