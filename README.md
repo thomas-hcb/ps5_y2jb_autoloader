@@ -95,6 +95,7 @@ Some users are reporting that adding a slight delay before loading etaHEN improv
 
 ## Credits
 
+* **[itsPLK](https://github.com/itsPLK)** - creator of the original [ps5_y2jb_autoloader](https://github.com/itsPLK/ps5_y2jb_autoloader)
 * **[Gezine](https://github.com/Gezine)** - creator of the original [Y2JB](https://github.com/Gezine/Y2JB)
 * **[shahrilnet](https://github.com/shahrilnet), [null_ptr](https://github.com/n0llptr)** - Referenced many codes from [Remote Lua Loader](https://github.com/shahrilnet/remote_lua_loader)
 * **[ntfargo](https://github.com/ntfargo)** - Thanks for providing V8 CVEs and CTF writeups
