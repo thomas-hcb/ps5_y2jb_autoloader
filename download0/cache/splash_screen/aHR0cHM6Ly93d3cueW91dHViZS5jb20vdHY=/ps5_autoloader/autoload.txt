@@ -19,4 +19,4 @@
 #   elfldr.elf (must be that filename!) line before other ELFs.
 # -----------------------------------------------------------------------------------------
 
-ftpsrv-ps5_v0.13.elf
+ftpsrv-ps5_v0.17.2.elf
