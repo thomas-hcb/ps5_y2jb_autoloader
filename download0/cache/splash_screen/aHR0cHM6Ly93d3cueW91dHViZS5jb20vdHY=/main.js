@@ -11,7 +11,7 @@ const autoloader_version_string = "Autoloader v0.4 by PLK";
 
 
 
-function load_localscript(src) {
+async function load_localscript(src) {
     return new Promise((resolve, reject) => {
         const script = document.createElement('script');
         script.src = src;
