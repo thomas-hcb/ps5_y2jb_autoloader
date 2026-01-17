@@ -13,13 +13,16 @@
 - ItsPLK's autoloader uses a modified version of `lapse.js` that removes calling `kill_youtube()` at the end of its lapse version.
   - Gezine `lapse.js`: https://github.com/Gezine/Y2JB/blob/cc0a28a7697a949c3a14e1dc4dce958480a3f60f/payloads/lapse.js#L1902
   - itsPLK `lapse.js`: https://github.com/itsPLK/ps5_y2jb_autoloader/blob/main/download0/cache/splash_screen/aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY%3D/lapse.js#L1908
-- My fix removes the call to `kill_youtube()` (see: https://github.com/itsPLK/ps5_y2jb_autoloader/blob/main/download0/cache/splash_screen/aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY%3D/main.js#L928) to prevent the autoloader from closing the YouTube app. This change avoids the System Software Error that occurred when an M.2 SSD was installed. Use `y2jb_updater` (https://github.com/itsPLK/y2jb_updater) to deploy this update to your PS5.
+- My fix removes the call to `kill_youtube()` (see: https://github.com/itsPLK/ps5_y2jb_autoloader/blob/main/download0/cache/splash_screen/aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY%3D/main.js#L928) to prevent the autoloader from closing the YouTube app. 
+- This change avoids the System Software Error that occurred when an M.2 SSD was installed. This is benefical for both normal boot and wake from rest mode, with etaHEN Toolbox now loading correctly.
+- Use `y2jb_updater` (https://github.com/itsPLK/y2jb_updater) to deploy this update to your PS5.
 
 ### How to apply the update
 Follow the [release page](https://github.com/thomas-hcb/ps5_y2jb_autoloader/releases) or create the update package yourself as below:
 - Run: `python create_update_package.py "download0\cache\splash_screen\aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY="`
 - Copy the generated `y2jb_update.zip` to `USB/y2jb_update.zip`.
-- Insert the USB drive into your PS5 and run the YouTube app to install the update.
+- Insert the USB drive into your PS5 and run the YouTube app to install the update. 
+- The changes will be effective from the 2nd boot.
 - Enjoy the fix. You can also configure etaHEN Toolbox to automatically open Itemzflow; this will gracefully close the YouTube app behind the scenes.
 
 ## Result after applying the fix
