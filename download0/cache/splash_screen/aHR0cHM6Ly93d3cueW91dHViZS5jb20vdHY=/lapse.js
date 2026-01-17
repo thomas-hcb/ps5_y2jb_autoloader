@@ -23,7 +23,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-async function start_lapse() {
+(async function() {
     try {
         const lapse_version = "Y2JB Lapse 1.1 by Gezine";
         
@@ -1751,8 +1751,6 @@ async function start_lapse() {
             
             await log("Exploit failed - Reboot and try again");
             send_notification("Exploit failed - Reboot and try again");
-
-            kill_youtube();
         }
         
         function rerun_check() {
@@ -1768,9 +1766,6 @@ async function start_lapse() {
                 if(is_jailbroken()) {
                     await log("Already Jailbroken");
                     send_notification("Already Jailbroken");
-
-                    kill_youtube();
-
                     return;
                 }                
             } else {
@@ -1787,9 +1782,6 @@ async function start_lapse() {
         if(rerun_check()) {
             await log("Restart your PS5 to run Lapse again");
             send_notification("Restart your PS5 to run Lapse again");
-
-            kill_youtube();
-
             return;
         }
 
@@ -1898,10 +1890,10 @@ async function start_lapse() {
             
             await cleanup();
             
-            await log("Lapse finished\nClosing Y2JB...");
-            send_notification("Lapse finished\nClosing Y2JB...");
             //Add this kill function call back to indicate that ItsPLK has modified the Gezine lapse.js version not to close the YT app.
-            //kill_youtube();
+            await log("Lapse finished\nLeaving Y2JB open...");
+            send_notification("Lapse finished\nLeaving Y2JB open...");
+            //await kill_youtube();
             
         } catch (e) {
             await log("Lapse error: " + e.message);
@@ -1914,4 +1906,4 @@ async function start_lapse() {
         await log("Lapse error: " + e.message);
         await log(e.stack);
     }
-}
+})();

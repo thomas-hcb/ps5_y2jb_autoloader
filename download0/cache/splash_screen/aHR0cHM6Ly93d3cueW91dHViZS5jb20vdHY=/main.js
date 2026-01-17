@@ -11,7 +11,7 @@ const autoloader_version_string = "Autoloader v0.4 by PLK";
 
 
 
-async function load_localscript(src) {
+function load_localscript(src) {
     return new Promise((resolve, reject) => {
         const script = document.createElement('script');
         script.src = src;
@@ -881,8 +881,6 @@ function trigger() {
         FW_VERSION = get_fwversion();
         
         send_notification(version_string + "\nFW : " + FW_VERSION);
-        send_notification("\n" + autoloader_version_string + "\n");
-
         await log("FW detected : " + FW_VERSION);
         
         await log("libkernel_base @ " + toHex(libkernel_base));
@@ -906,9 +904,10 @@ function trigger() {
         await load_localscript('kernel.js');
         await load_localscript('kernel_offset.js');
         await load_localscript('gpu.js');
-
         await load_localscript('elf_loader.js');
-                
+        
+        send_notification("Close two PSN dialogs manually");
+        
         ////////////////////
         // MAIN EXECUTION //
         ////////////////////
@@ -923,8 +922,8 @@ function trigger() {
         await start_icon_update();
         await start_autoload();
 
-        send_notification("Autoload finished.\nOpen Itemzflow to close the YT app gracefully.");
-        //kill_youtube();
+        send_notification("Thomas H's v1.1.0: Autoload finished.\nOpen Itemzflow to close the YT app gracefully.");
+        //await kill_youtube();
 
     } catch (e) {                
         await log('EXCEPTION: ' + e.message);

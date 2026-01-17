@@ -505,11 +505,6 @@ function get_dlsym_offset(fw_version) {
     return DLSYM_OFFSETS[closest.key];
 }
 
-function kill_youtube() {
-    const pid = syscall(SYSCALL.getpid);
-    syscall(SYSCALL.kill, pid, SIGKILL);
-}
-
 async function send_network(ip_address, port, sock_type, buffer) {
     const sockaddr_in = malloc(16);
     const buf_ptr = malloc(buffer.length);
@@ -558,4 +553,21 @@ async function send_network(ip_address, port, sock_type, buffer) {
     }
     
     syscall(SYSCALL.close, sock_fd);
+}
+
+async function kill_youtube() {
+    try {
+        check_jailbroken();
+        
+        const killyoutube_download0_path = "/mnt/sandbox/" + get_title_id() + "_000/download0/cache/splash_screen/aHR0cHM6Ly93d3cueW91dHViZS5jb20vdHY=/kill_youtube.elf";
+        
+        const file_data = await read_file(killyoutube_download0_path);
+        if (!file_data) {
+            throw new Error("Failed to read file");
+        }
+        
+        await send_network("127.0.0.1", 9021, SOCK_STREAM, file_data);
+    } catch (e) {
+        await log("ERROR in kill_youtube: " + e.message);
+    }
 }
